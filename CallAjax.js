@@ -51,20 +51,21 @@ function MydrawChart() {
 }
 
 function GET() {
-  var url = "https://censopoblacion.azurewebsites.net/API/indicadores/2/999";
-  fetch(url)
+  var codigodep = document.getElementById('InfoDepartamento')
+  var url = "https://censopoblacion.gt/indicadores/"+codigodep.value+"/999";
+  fetch(url, { mode: 'no-cors' })
     .then(response => response.json())
     .then(data => {
       console.log(data);
       var data2 = JSON.parse(data);
 
-      var NombreDep = data2.nombre;
+      var NombreDep = data.nombre;
       document.getElementById('NombreDep').textContent = "Nombre: " + NombreDep;
 
-      var CapDep = data2.capital;
+      var CapDep = data.capital;
       document.getElementById('CapDep').textContent = "Capital: " + CapDep;
 
-      var ExtDep = data2.ext_territorial;
+      var ExtDep = data.ext_territorial;
       document.getElementById('ExtDep').textContent = "Extension territorial: " + ExtDep + " Km²";
 
       var pobtotal = data2.pob_total;
@@ -101,6 +102,10 @@ function GET() {
       LadinoGrafica = ladino;
 
     })
+    .catch(error => {
+      // Manejo de errores
+      console.error("Error en la solicitud:", error);
+    });
 }
 
 function GETMuni() {
